@@ -11,7 +11,7 @@ import {
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Navbar from '@/Components/Navbar.vue';
 import { defineProps } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { Order } from '@/types';
 import Badge from '@/Components/ui/badge/Badge.vue';
 import Button from '@/Components/ui/button/Button.vue';
@@ -22,6 +22,15 @@ const props = defineProps<{
     canRegister?: boolean;
     orders: Order[];
 }>();
+
+const printOrder = (order: any) => {
+    //send req to order.print route
+    router.get(route('order.print', order.id), {
+        onSuccess: (response) => {
+            console.log(response);
+        },
+    });
+};
 
 </script>
 
@@ -73,8 +82,8 @@ const props = defineProps<{
                                 USD {{ order.total }}
                             </TableCell>
                             <TableCell>
-                                <Button variant="ghost">
-                                    <Receipt class="h-6"/>
+                                <Button variant="ghost" :as="'a'" :href="'/order/print/' + order.id">
+                                    <Receipt class="h-6" />
                                 </Button>
                             </TableCell>
                         </TableRow>
