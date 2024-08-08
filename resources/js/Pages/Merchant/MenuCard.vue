@@ -40,6 +40,9 @@ const props = defineProps<{
                 <Badge>$ {{ menu.price }}</Badge>
 
                 <NumberField
+                    @update:model-value="(v) => {
+                        $emit('AddQuantity', { menu: menu, quantity: v})
+                    }"
                     id="quantity" 
                     :default-value="0" 
                     :min="0"
@@ -48,7 +51,7 @@ const props = defineProps<{
                     <NumberFieldContent>
                         <NumberFieldDecrement />
                         <NumberFieldInput />
-                        <NumberFieldIncrement @click.prevent="$emit('AddQuantity', menu)"/>
+                        <NumberFieldIncrement/>
                     </NumberFieldContent>
                 </NumberField>
             </div>

@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(MerchantController::class)->group(function (){
    Route::get('/merchant/{merchant}', 'getMerchant')->name('merchant.detail');
+   Route::post('/checkout', 'checkout')->name('checkout');
 });
 
 require __DIR__.'/auth.php';

@@ -5,32 +5,58 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Separator from '@/Components/ui/separator/Separator.vue';
 import Button from '@/Components/ui/button/Button.vue';
 import { ArrowLeft } from 'lucide-vue-next';
-import { Link } from '@inertiajs/vue3';
-import { ref, defineProps } from 'vue';
+import { Link, router, useForm, usePage } from '@inertiajs/vue3';
+import { ref, defineProps, computed } from 'vue';
 import OrderDrawer from '@/Pages/Merchant/OrderDrawer.vue';
 
-defineProps<{
+const props = defineProps<{
     merchant: Merchant;
 }>();
 
-const total = ref<number>(0)
-const items = ref<{
-    item: Menu;
-    quantity: number;
-}[]>([])
+const form = useForm<{
+    total: number;
+    items: {
+        item: Menu;
+        quantity: number;
+    }[];
+    merchant_id: number;
 
-const handleAddQuantity = (menu: Menu) => {
-    total.value += menu.price
+}>({
+    total: 0,
+    items: [],
+    merchant_id: props.merchant.id
+})
 
-    const item = items.value.find((item) => item.item.id === menu.id)
+const page = usePage();
+const isAuth = computed(() => page.props.auth.user)
+
+const handleAddQuantity = ({menu, quantity}:{menu: Menu, quantity: number}) => {
+    const item = form.items.find((item) => item.item.id === menu.id)
     if (item) {
-        item.quantity += 1
+        item.quantity = quantity
     } else {
-        items.value.push({
-            item: menu,
-            quantity: 1
-        })
+        form.items.push({ item: menu, quantity })
     }
+
+    form.total = form.items.reduce((acc, i) => {
+        return acc + i.item.price * i.quantity
+    }, 0)
+}
+
+function handleCheckout() {
+    // check if there is user session login
+    if(!isAuth.value) {
+        router.get(route('login'))
+        return
+    }
+
+    form.post(route('checkout'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset()
+        }
+    })
+    
 }
 
 </script>
@@ -47,24 +73,25 @@ const handleAddQuantity = (menu: Menu) => {
             <Separator class="my-3" />
             <p class="">{{ merchant.description }}</p>
         </div>
-        <h2 class="text-2xl mb-3 font-semibold text-slate-600">Menus</h2>
+        <h2 class="text-2xl mb-3 font-semibold text-slate-600">Menu</h2>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MenuCard @AddQuantity="handleAddQuantity" :menu="menu" v-for="menu in merchant.menus" :key="menu.id" />
         </div>
         <!-- Total -->
-        <div v-if="total > 0"
+        <div v-if="form.total > 0"
             class="fixed bottom-0 left-0 w-full p-4 bg-primary text-secondary flex justify-between items-center">
-            <OrderDrawer :orderList="items">
+            <!-- Drawer -->
+            <OrderDrawer :orderList="form.items">
                 <Button variant="secondary">
                     Order List
                 </Button>
             </OrderDrawer>
+            
             <div class="flex gap-10 items-center">
-                <h1 class="text-2xl font-bold">Total : $ {{ total }}</h1>
-                <Button variant="secondary">Checkout</Button>
+                <h1 class="text-2xl font-bold">Total : $ {{ form.total }}</h1>
+                <Button variant="secondary" @click.prevent="handleCheckout">Checkout</Button>
             </div>
         </div>
-        <!-- Drawer -->
 
     </GuestLayout>
 </template>
