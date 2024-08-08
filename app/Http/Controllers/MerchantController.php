@@ -56,4 +56,17 @@ class MerchantController extends Controller
             ], 500);
         }
     }
+
+    public function update(Merchant $merchant, Request $request){
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+        ]);
+
+        $merchant->update($request->all());
+
+        return redirect()->back();
+    }
 }

@@ -3,12 +3,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+import UpdateMerchantInformation from './Partials/UpdateMerchantInformation.vue';
 
 defineProps<{
     mustVerifyEmail?: boolean;
     status?: string;
 }>();
+
+const isAdmin = usePage().props.auth.isAdmin;
+
 </script>
 
 <template>
@@ -25,6 +29,12 @@ defineProps<{
                     <UpdateProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
+                        class="max-w-xl"
+                    />
+                </div>
+
+                <div v-if="!isAdmin" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <UpdateMerchantInformation
                         class="max-w-xl"
                     />
                 </div>
