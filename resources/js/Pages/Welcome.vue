@@ -43,4 +43,4 @@ function handleImageError() {
         </main>
     </GuestLayout>
 
-</template>@/Pages/Merchant/MerchantCard.vue
+</template>

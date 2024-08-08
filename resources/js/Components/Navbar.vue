@@ -19,9 +19,9 @@ defineProps<{
             </svg>
         </div>
         <nav v-if="canLogin" class="flex gap-7">
-            <div class="flex gap-3 items-center">
-                <Link :href="route('home')">Merchant</Link>
-                <Link :href="route('home')">Keranjang</Link>
+            <div class="flex gap-6 items-center">
+                <Link :href="route('home')" class="font-bold">Merchant</Link>
+                <Link :href="route('order.index')" class="font-bold">My Order</Link>
             </div>
 
             <Link v-if="$page.props.auth.user" :href="route('dashboard')"

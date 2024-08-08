@@ -26,3 +26,31 @@ export type Merchant = {
     phone: string;
     menus?: Menu[]
 }
+
+export type Customer = {
+    id: number;
+    name: string;
+    description: string;
+    address: string;
+    phone: string;
+}
+
+export type OrderItem = {
+    id: number;
+    order_id: number;
+    menu_id: number;
+    quantity: number;
+}
+
+export type Order = {
+    id: number;
+    user_id: number;
+    merchant_id: number;
+    total: number;
+    status: string;
+    code: string;
+    created_at: string;
+    order_list?: OrderItem[]
+    merchant?: Merchant
+    customer?: Customer
+}
