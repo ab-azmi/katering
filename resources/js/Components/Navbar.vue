@@ -24,6 +24,7 @@ defineProps<{
             <div class="flex gap-6 items-center">
                 <Link :href="route('home')" class="font-bold">Merchant</Link>
                 <Link v-if="$page.props.auth?.isCustomer" :href="route('order.index')" class="font-bold">My Order</Link>
+                <Link v-else :href="route('dashboard')" class="font-bold">Dashboard</Link>
             </div>
 
            

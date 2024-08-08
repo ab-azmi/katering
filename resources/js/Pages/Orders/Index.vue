@@ -81,17 +81,7 @@ const printOrder = (order: any) => {
                                 {{ order.code }}
                             </TableCell>
                             <TableCell>
-                                <Badge v-if="$page.props.auth.isCustomer" variant="default">{{ order.status }}</Badge>
-                                <DropdownMenu v-else>
-                                    <DropdownMenuTrigger>
-                                        <Badge variant="default">{{ order.status }}</Badge>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
-                                        <DropdownMenuItem>Pending</DropdownMenuItem>
-                                        <DropdownMenuItem>Success</DropdownMenuItem>
-                                        <DropdownMenuItem>Cancle</DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                <Badge variant="default">{{ order.status }}</Badge>
                             </TableCell>
                             <TableCell>{{ order.merchant?.name }}</TableCell>
                             <TableCell>
