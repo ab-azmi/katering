@@ -16,14 +16,6 @@ import Badge from '@/Components/ui/badge/Badge.vue';
 import Button from '@/Components/ui/button/Button.vue';
 import { Receipt } from 'lucide-vue-next';
 import OrderDrawer from '@/Pages/Merchant/OrderDrawer.vue';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu'
 
 const props = defineProps<{
     canLogin?: boolean;
@@ -81,7 +73,10 @@ const printOrder = (order: any) => {
                                 {{ order.code }}
                             </TableCell>
                             <TableCell>
-                                <Badge variant="default">{{ order.status }}</Badge>
+                                <Badge
+                                    :variant="order.status === 'success' ? 'default' : order.status === 'pending' ? 'outline' : 'destructive'">
+                                    {{ order.status }}
+                                </Badge>
                             </TableCell>
                             <TableCell>{{ order.merchant?.name }}</TableCell>
                             <TableCell>

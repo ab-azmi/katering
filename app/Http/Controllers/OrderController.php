@@ -10,27 +10,38 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
-    public function index()
+    private $orders;
+
+    public function __construct()
     {
-        if(auth()->user()->hasRole('customer')){
+        if (auth()->user()->hasRole('customer')) {
             $id = auth()->user()->customer->id ?? null;
-            $orders = Order::with('orderItems.menu', 'merchant', 'customer')
+            $this->orders = Order::with('orderItems.menu', 'merchant', 'customer')
                 ->where('customer_id', $id)
                 ->latest()
                 ->get();
-        }else{
+        } else {
             $id = auth()->user()->merchant->id ?? null;
-            $orders = Order::with('orderItems.menu', 'merchant', 'customer')
+            $this->orders = Order::with('orderItems.menu', 'merchant', 'customer')
                 ->where('merchant_id', $id)
                 ->latest()
                 ->get();
         }
-
-
+    }
+    public function index()
+    {
         return Inertia::render('Orders/Index', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'orders' => $orders,
+            'orders' => $this->orders,
+            'isCustomer' => auth()->user()?->isCustomer,
+        ]);
+    }
+
+    public function dashboard()
+    {
+        return Inertia::render('Orders/Dashboard', [
+            'orders' => $this->orders,
             'isCustomer' => auth()->user()?->isCustomer,
         ]);
     }
@@ -39,10 +50,18 @@ class OrderController extends Controller
     {
         $order->load('orderItems.menu', 'merchant', 'customer');
         $pdf = Pdf::loadView('pdf.invoice', $order->toArray());
-        return $pdf->download($order->code.'.pdf');
+        return $pdf->download($order->code . '.pdf');
     }
 
-    public function status(Order $order, $status)
-    {
+    public function update(Order $order, Request $request)
+    {   
+        $request->validate([
+            'status' => 'required|string',
+            'code' => 'required|string',
+            'total' => 'required|numeric',
+            'note' => 'nullable|string',
+        ]);
+        $order->update($request->all());
+        return back();
     }
 }

@@ -26,9 +26,10 @@ Route::controller(MerchantController::class)->group(function (){
 });
 
 Route::controller(OrderController::class)->group(function(){
-    Route::get('/order', 'index')->name('order.index');
+    Route::get('/order', 'index')->name('order.index')->middleware('role:customer');
+    Route::get('/order/dashboard', 'dashboard')->name('dashboard.order')->middleware('role:merchant');
     Route::get('/order/print/{order}', 'print')->name('order.print');
-    Route::post('/order/status/{order}/{status}', 'status')->name('order.status');
+    Route::put('/order/{order}', 'update')->name('order.update');
 });
 
 require __DIR__.'/auth.php';
