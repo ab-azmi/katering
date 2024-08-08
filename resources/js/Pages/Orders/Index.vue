@@ -10,12 +10,12 @@ import {
 } from '@/Components/ui/table'
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Navbar from '@/Components/Navbar.vue';
-import { defineProps } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Order } from '@/types';
 import Badge from '@/Components/ui/badge/Badge.vue';
 import Button from '@/Components/ui/button/Button.vue';
 import { Receipt } from 'lucide-vue-next';
+import OrderDrawer from '@/Pages/Merchant/OrderDrawer.vue';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +29,6 @@ const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
     orders: Order[];
-    isCustomer: boolean;
 }>();
 
 const printOrder = (order: any) => {
@@ -40,6 +39,7 @@ const printOrder = (order: any) => {
         },
     });
 };
+
 
 </script>
 
@@ -81,7 +81,7 @@ const printOrder = (order: any) => {
                                 {{ order.code }}
                             </TableCell>
                             <TableCell>
-                                <Badge v-if="isCustomer" variant="default">{{ order.status }}</Badge>
+                                <Badge v-if="$page.props.auth.isCustomer" variant="default">{{ order.status }}</Badge>
                                 <DropdownMenu v-else>
                                     <DropdownMenuTrigger>
                                         <Badge variant="default">{{ order.status }}</Badge>
@@ -95,7 +95,9 @@ const printOrder = (order: any) => {
                             </TableCell>
                             <TableCell>{{ order.merchant?.name }}</TableCell>
                             <TableCell>
-                                <Button>Show</Button>
+                                <OrderDrawer :orderItems="order.order_items!">
+                                    <Button>Show</Button>
+                                </OrderDrawer>
                             </TableCell>
                             <TableCell class="text-right">
                                 USD {{ order.total }}

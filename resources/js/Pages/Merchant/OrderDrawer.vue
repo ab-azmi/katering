@@ -12,13 +12,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/Components/ui/drawer'
-import { Menu } from '@/types'
+import { Menu, OrderItem } from '@/types'
 
 defineProps<{
-    orderList: {
-        item: Menu;
-        quantity: number;
-    }[];
+    orderItems: OrderItem[];
 }>();
 
 </script>
@@ -41,9 +38,9 @@ defineProps<{
             <h1 class="text-lg font-bold">Item</h1>
             <h1 class="text-lg font-bold">Quantity</h1>
           </div>
-          <template v-for="order in orderList" :key="order.item.id">
+          <template v-for="order in orderItems" :key="order.id">
             <div class="flex justify-between items-center">
-              <p>{{ order.item.name }}</p>
+              <p>{{ order.menu?.name }}</p>
               <p>{{ order.quantity }}</p>
             </div>
             <!-- TODO remove item -->

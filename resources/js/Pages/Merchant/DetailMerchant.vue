@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu, Merchant } from '@/types';
+import { Menu, Merchant, OrderItem } from '@/types';
 import MenuCard from '@/Pages/Merchant/MenuCard.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Separator from '@/Components/ui/separator/Separator.vue';
@@ -16,10 +16,7 @@ const props = defineProps<{
 
 const form = useForm<{
     total: number;
-    items: {
-        item: Menu;
-        quantity: number;
-    }[];
+    items: OrderItem[];
     merchant_id: number;
 
 }>({
@@ -32,15 +29,19 @@ const page = usePage();
 const isAuth = computed(() => page.props.auth.user)
 
 const handleAddQuantity = ({ menu, quantity }: { menu: Menu, quantity: number }) => {
-    const item = form.items.find((item) => item.item.id === menu.id)
+    const item = form.items.find((item) => item?.menu?.id === menu.id)
     if (item) {
         item.quantity = quantity
     } else {
-        form.items.push({ item: menu, quantity })
+        form.items.push({
+            menu_id: menu.id,
+            quantity: quantity,
+            menu: menu
+        })
     }
 
     form.total = form.items.reduce((acc, i) => {
-        return acc + i.item.price * i.quantity
+        return acc + i?.menu?.price! * i.quantity
     }, 0)
 }
 
@@ -58,8 +59,7 @@ function handleCheckout() {
             toast('Order has been created', {
                 action: {
                     label: 'Go to Order',
-                    // TODO go to order page
-                    onClick: () => console.log('Undo'),
+                    onClick: () => router.get(route('order.index')),
                 },
                 style: {
                     backgroundColor: '#10B981',
@@ -93,14 +93,14 @@ function handleCheckout() {
         <div v-if="form.total > 0"
             class="fixed bottom-0 left-0 w-full p-4 bg-primary text-secondary flex justify-between items-center">
             <!-- Drawer -->
-            <OrderDrawer :orderList="form.items">
+            <OrderDrawer :orderItems="form.items">
                 <Button variant="secondary">
                     Order List
                 </Button>
             </OrderDrawer>
 
             <div class="flex gap-10 items-center">
-                <h1 class="text-2xl font-bold">Total : $ {{ form.total }}</h1>
+                <h1 class="text-2xl font-bold">Total : $ {{ form.total.toFixed(2) }}</h1>
                 <Button variant="secondary" @click.prevent="handleCheckout">Checkout</Button>
             </div>
         </div>

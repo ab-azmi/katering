@@ -36,10 +36,11 @@ export type Customer = {
 }
 
 export type OrderItem = {
-    id: number;
-    order_id: number;
+    id?: number;
+    order_id?: number;
     menu_id: number;
     quantity: number;
+    menu?: Menu
 }
 
 export type Order = {
@@ -50,7 +51,15 @@ export type Order = {
     status: string;
     code: string;
     created_at: string;
-    order_list?: OrderItem[]
+    order_items?: OrderItem[]
     merchant?: Merchant
     customer?: Customer
+}
+
+export type UserType = {
+    id: number;
+    name: string;
+    email: string;
+    email_verified_at: string;
+    roles?: string[]
 }

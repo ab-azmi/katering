@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import Badge from './ui/badge/Badge.vue';
+import { UserType } from '@/types';
 
 defineProps<{
     canLogin?: boolean;
@@ -22,7 +23,7 @@ defineProps<{
         <nav v-if="canLogin" class="flex gap-7">
             <div class="flex gap-6 items-center">
                 <Link :href="route('home')" class="font-bold">Merchant</Link>
-                <Link :href="route('order.index')" class="font-bold">My Order</Link>
+                <Link v-if="$page.props.auth?.isCustomer" :href="route('order.index')" class="font-bold">My Order</Link>
             </div>
 
            
@@ -37,7 +38,7 @@ defineProps<{
                 <Badge>
                     {{ $page.props.auth.user.name }}
                 </Badge>
-                <Link :href="route('logout')" method="post">Logout</Link>
+                <Link :href="route('logout')" method="post" as="button">Logout</Link>
             </template>
             
         </nav>

@@ -25,7 +25,7 @@ class MerchantController extends Controller
                 'merchant_id' => 'required|exists:merchants,id',
                 'total' => 'required|numeric',
                 'items' => 'required|array',
-                'items.*.item.id' => 'required|exists:menus,id',
+                'items.*.menu.id' => 'required|exists:menus,id',
                 'items.*.quantity' => 'required|numeric'
             ]);
 
@@ -43,7 +43,7 @@ class MerchantController extends Controller
             //create order items
             foreach($request->items as $item){
                 $order->orderItems()->create([
-                    'menu_id' => $item['item']['id'],
+                    'menu_id' => $item['menu']['id'],
                     'quantity' => $item['quantity'],
                 ]);
             }

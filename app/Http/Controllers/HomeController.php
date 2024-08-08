@@ -17,8 +17,6 @@ class HomeController extends Controller
             'merchants' => $merchant,
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
         ]);
     }
 }

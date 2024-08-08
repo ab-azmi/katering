@@ -9,6 +9,7 @@ use App\Models\Merchant;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,16 +18,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        //make roles
+        Role::create([
+            'name' => 'admin'
+        ]);
+        Role::create([
+            'name' => 'merchant'
+        ]);
+        Role::create([
+            'name' => 'customer'
+        ]);
+
+
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-        ]);
+        ])->assignRole('admin');
 
         // user merchant
         $merchant = User::factory()->create([
             'name' => 'merchant',
             'email' => 'merchant@gmail.com'
-        ]);
+        ])->assignRole('merchant');
+
         Merchant::factory()->create([
             'user_id' => $merchant->id
         ]);
@@ -35,7 +49,8 @@ class DatabaseSeeder extends Seeder
         $customer = User::factory()->create([
             'name' => 'customer',
             'email' => 'customer@gmail.com'
-        ]);
+        ])->assignRole('customer');
+
         Customer::factory()->create([
             'user_id' => $customer->id
         ]);

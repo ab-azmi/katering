@@ -12,15 +12,15 @@ class OrderController extends Controller
 {
     public function index()
     {
-        if(auth()->user()->isCustomer){
+        if(auth()->user()->hasRole('customer')){
             $id = auth()->user()->customer->id ?? null;
-            $orders = Order::with('orderItems', 'merchant', 'customer')
+            $orders = Order::with('orderItems.menu', 'merchant', 'customer')
                 ->where('customer_id', $id)
                 ->latest()
                 ->get();
         }else{
             $id = auth()->user()->merchant->id ?? null;
-            $orders = Order::with('orderItems', 'merchant', 'customer')
+            $orders = Order::with('orderItems.menu', 'merchant', 'customer')
                 ->where('merchant_id', $id)
                 ->latest()
                 ->get();
@@ -31,7 +31,7 @@ class OrderController extends Controller
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'orders' => $orders,
-            'isCustomer' => auth()->user()->isCustomer,
+            'isCustomer' => auth()->user()?->isCustomer,
         ]);
     }
 
