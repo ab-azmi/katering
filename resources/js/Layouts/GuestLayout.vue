@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import { Toaster } from '@/Components/ui/sonner'
 </script>
 
 <template>
     <div class="min-h-screen max-w-5xl mx-auto">
             <slot />
+            <Toaster />
     </div>
 </template>

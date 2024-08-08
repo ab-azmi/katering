@@ -7,6 +7,7 @@ import Button from '@/Components/ui/button/Button.vue';
 import { ArrowLeft } from 'lucide-vue-next';
 import { Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { ref, defineProps, computed } from 'vue';
+import { toast } from 'vue-sonner'
 import OrderDrawer from '@/Pages/Merchant/OrderDrawer.vue';
 
 const props = defineProps<{
@@ -30,7 +31,7 @@ const form = useForm<{
 const page = usePage();
 const isAuth = computed(() => page.props.auth.user)
 
-const handleAddQuantity = ({menu, quantity}:{menu: Menu, quantity: number}) => {
+const handleAddQuantity = ({ menu, quantity }: { menu: Menu, quantity: number }) => {
     const item = form.items.find((item) => item.item.id === menu.id)
     if (item) {
         item.quantity = quantity
@@ -45,7 +46,7 @@ const handleAddQuantity = ({menu, quantity}:{menu: Menu, quantity: number}) => {
 
 function handleCheckout() {
     // check if there is user session login
-    if(!isAuth.value) {
+    if (!isAuth.value) {
         router.get(route('login'))
         return
     }
@@ -54,9 +55,20 @@ function handleCheckout() {
         preserveScroll: true,
         onSuccess: () => {
             form.reset()
+            toast('Order has been created', {
+                action: {
+                    label: 'Go to Order',
+                    // TODO go to order page
+                    onClick: () => console.log('Undo'),
+                },
+                style: {
+                    backgroundColor: '#10B981',
+                    color: '#fff',
+                },
+            })
         }
     })
-    
+
 }
 
 </script>
@@ -86,7 +98,7 @@ function handleCheckout() {
                     Order List
                 </Button>
             </OrderDrawer>
-            
+
             <div class="flex gap-10 items-center">
                 <h1 class="text-2xl font-bold">Total : $ {{ form.total }}</h1>
                 <Button variant="secondary" @click.prevent="handleCheckout">Checkout</Button>
