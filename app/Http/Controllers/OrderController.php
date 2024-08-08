@@ -12,11 +12,26 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('orderItems', 'merchant', 'customer')->get();
+        if(auth()->user()->isCustomer){
+            $id = auth()->user()->customer->id ?? null;
+            $orders = Order::with('orderItems', 'merchant', 'customer')
+                ->where('customer_id', $id)
+                ->latest()
+                ->get();
+        }else{
+            $id = auth()->user()->merchant->id ?? null;
+            $orders = Order::with('orderItems', 'merchant', 'customer')
+                ->where('merchant_id', $id)
+                ->latest()
+                ->get();
+        }
+
+
         return Inertia::render('Orders/Index', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'orders' => $orders,
+            'isCustomer' => auth()->user()->isCustomer,
         ]);
     }
 
@@ -25,5 +40,9 @@ class OrderController extends Controller
         $order->load('orderItems.menu', 'merchant', 'customer');
         $pdf = Pdf::loadView('pdf.invoice', $order->toArray());
         return $pdf->download($order->code.'.pdf');
+    }
+
+    public function status(Order $order, $status)
+    {
     }
 }

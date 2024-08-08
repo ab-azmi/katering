@@ -28,6 +28,7 @@ Route::controller(MerchantController::class)->group(function (){
 Route::controller(OrderController::class)->group(function(){
     Route::get('/order', 'index')->name('order.index');
     Route::get('/order/print/{order}', 'print')->name('order.print');
+    Route::post('/order/status/{order}/{status}', 'status')->name('order.status');
 });
 
 require __DIR__.'/auth.php';

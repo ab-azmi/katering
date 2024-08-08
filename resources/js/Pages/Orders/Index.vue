@@ -16,11 +16,20 @@ import { Order } from '@/types';
 import Badge from '@/Components/ui/badge/Badge.vue';
 import Button from '@/Components/ui/button/Button.vue';
 import { Receipt } from 'lucide-vue-next';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/Components/ui/dropdown-menu'
 
 const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
     orders: Order[];
+    isCustomer: boolean;
 }>();
 
 const printOrder = (order: any) => {
@@ -72,7 +81,17 @@ const printOrder = (order: any) => {
                                 {{ order.code }}
                             </TableCell>
                             <TableCell>
-                                <Badge>{{ order.status }}</Badge>
+                                <Badge v-if="isCustomer" variant="default">{{ order.status }}</Badge>
+                                <DropdownMenu v-else>
+                                    <DropdownMenuTrigger>
+                                        <Badge variant="default">{{ order.status }}</Badge>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem>Pending</DropdownMenuItem>
+                                        <DropdownMenuItem>Success</DropdownMenuItem>
+                                        <DropdownMenuItem>Cancle</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </TableCell>
                             <TableCell>{{ order.merchant?.name }}</TableCell>
                             <TableCell>

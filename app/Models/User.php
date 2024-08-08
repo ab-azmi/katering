@@ -47,6 +47,12 @@ class User extends Authenticatable
         ];
     }
 
+    //attribute to check if user has relation to customer
+    public function getIsCustomerAttribute(): bool
+    {
+        return $this->customer()->exists();
+    }
+
     //relation to merchant
     public function merchant(): HasOne
     {
