@@ -20,6 +20,7 @@ class MerchantFactory extends Factory
             'name' => fake()->name(),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
+            'description' => fake()->sentence(10),
             'user_id' => 2
         ];
     }
