@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
+use App\Models\Foto;
+use App\Models\Menu;
+use App\Models\Merchant;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,7 +23,31 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // user merchant
-        
+        $merchant = User::factory()->create([
+            'name' => 'merchant',
+            'email' => 'merchant@gmail.com'
+        ]);
+        Merchant::factory()->create([
+            'user_id' => $merchant->id
+        ]);
+
         //user customer
+        $customer = User::factory()->create([
+            'name' => 'customer',
+            'email' => 'customer@gmail.com'
+        ]);
+        Customer::factory()->create([
+            'user_id' => $customer->id
+        ]);
+
+        //make menus
+        $menus = Menu::factory(12)->create();
+
+        //make fotos
+        foreach ($menus as $menu) {
+            $menu->fotos()->createMany(
+                Foto::factory(3)->make()->toArray()
+            );
+        }
     }
 }
