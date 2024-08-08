@@ -8,17 +8,17 @@ import {
     CardTitle,
 } from '@/Components/ui/card'
 import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
+    NumberField,
+    NumberFieldContent,
+    NumberFieldDecrement,
+    NumberFieldIncrement,
+    NumberFieldInput,
 } from '@/Components/ui/number-field'
 import { Menu } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/Components/ui/button';
-import Badge from './ui/badge/Badge.vue';
-
+import Badge from '@/Components/ui/badge/Badge.vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
     menu: Menu;
@@ -39,11 +39,16 @@ const props = defineProps<{
             <div class="flex justify-between items-center">
                 <Badge>$ {{ menu.price }}</Badge>
 
-                <NumberField id="quantity" :default-value="0" :min="0">
+                <NumberField
+                    id="quantity" 
+                    :default-value="0" 
+                    :min="0"
+                    :max="999"
+                    >
                     <NumberFieldContent>
                         <NumberFieldDecrement />
                         <NumberFieldInput />
-                        <NumberFieldIncrement />
+                        <NumberFieldIncrement @click.prevent="$emit('AddQuantity', menu)"/>
                     </NumberFieldContent>
                 </NumberField>
             </div>

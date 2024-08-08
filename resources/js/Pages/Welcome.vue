@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import Navbar from '@/Components/Navbar.vue';
-import MerchantCard from '@/Components/MerchantCard.vue';
+import MerchantCard from '@/Pages/Merchant/MerchantCard.vue';
 import { Merchant } from '@/types';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 
@@ -43,4 +43,4 @@ function handleImageError() {
         </main>
     </GuestLayout>
 
-</template>
+</template>@/Pages/Merchant/MerchantCard.vue
