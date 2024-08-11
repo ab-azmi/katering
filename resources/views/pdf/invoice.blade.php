@@ -12,7 +12,7 @@
         {{ $code }}
     </h1>
     <h2>
-        {{ $merchant['name'] }}
+        {{ $merchant['merchant']['name'] }}
     </h2>
     <h2>
         Total : USD {{ $total }}
@@ -31,9 +31,9 @@
             <tbody>
                 @foreach ($order_items as $item)
                 <tr>
-                    <td>{{ $item->menu->name }}</td>
-                    <td>{{ $item->menu->price }}</td>
-                    <td>{{ $item->quantity }}</td>
+                    <td>{{ $item['menu']['name'] }}</td>
+                    <td>{{ $item['menu']['name'] }}</td>
+                    <td>{{ $item['quantity'] }}</td>
                 </tr>
                 @endforeach
             </tbody>

@@ -22,7 +22,7 @@ const form = useForm<{
 }>({
     total: 0,
     items: [],
-    merchant_id: props.merchant.id
+    merchant_id: props.merchant.user.id
 })
 
 const page = usePage();

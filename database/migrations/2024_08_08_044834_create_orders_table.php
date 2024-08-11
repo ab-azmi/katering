@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('merchant_id')->constrained();
-            $table->foreignId('customer_id')->constrained();
+            $table->foreignId('merchant_id')->references('id')->on('users')->constrained();
+            $table->foreignId('customer_id')->references('id')->on('users')->constrained();
             $table->string('code');
             $table->enum('status', ['pending', 'success', 'cancel'])->default('pending');
             $table->float('total', precision: 2)->nullable();

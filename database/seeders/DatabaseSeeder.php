@@ -45,9 +45,12 @@ class DatabaseSeeder extends Seeder
             'user_id' => $merchant->id
         ]);
 
-        Merchant::factory(10)->create([
-            'user_id' => User::factory()->create()->id
-        ]);
+        foreach (range(1, 10) as $index) {
+            $temp = User::factory()->create()->assignRole('merchant');
+            Merchant::factory()->create([
+                'user_id' => $temp->id
+            ]);
+        }
 
         //user customer
         $customer = User::factory()->create([

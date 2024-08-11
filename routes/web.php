@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(MerchantController::class)->group(function (){
    Route::get('/merchant/{merchant:slug}', 'getMerchant')->name('merchant.detail');
-   Route::post('/checkout', 'checkout')->name('checkout');
+   Route::post('/checkout', 'checkout')->name('checkout')->middleware(['auth']);
    Route::patch('/merchant/{merchant}', 'update')->name('merchant.update');
 });
 

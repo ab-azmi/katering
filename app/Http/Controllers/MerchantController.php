@@ -13,8 +13,7 @@ class MerchantController extends Controller
 {
     public function getMerchant(Merchant $merchant)
     {
-        $merchant->load('menus');
-
+        $merchant->load('menus', 'user');
         return Inertia::render('Merchant/DetailMerchant', [
             'merchant' => $merchant
         ]);
@@ -24,20 +23,17 @@ class MerchantController extends Controller
     {
         try {
             $request->validate([
-                'merchant_id' => 'required|exists:merchants,id',
+                'merchant_id' => 'required|exists:users,id',
                 'total' => 'required|numeric',
                 'items' => 'required|array',
                 'items.*.menu.id' => 'required|exists:menus,id',
                 'items.*.quantity' => 'required|numeric'
             ]);
 
-            //get customer id
-            $customer_id = Customer::where('user_id', auth()->id())->first()->id;
-
             //create order
             $order = Order::create([
-                'merchant_id' => $request->merchant_id,
-                'customer_id' => $customer_id,
+                'merchant_id' => $request->merchant_id, //user_id
+                'customer_id' => auth()->id(),
                 'code' => 'ORD-' . time(),
                 'total' => $request->total,
                 'send_at' => now()

@@ -78,7 +78,7 @@ const printOrder = (order: any) => {
                                     {{ order.status }}
                                 </Badge>
                             </TableCell>
-                            <TableCell>{{ order.merchant?.name }}</TableCell>
+                            <TableCell>{{ order.merchant?.merchant?.name }}</TableCell>
                             <TableCell>
                                 <OrderDrawer :orderItems="order.order_items!">
                                     <Button>Show</Button>

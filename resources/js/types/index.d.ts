@@ -3,6 +3,9 @@ export interface User {
     name: string;
     email: string;
     email_verified_at: string;
+    roles?: string[]
+    merchant?: Merchant
+    customer?: Customer
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
@@ -25,7 +28,8 @@ export type Merchant = {
     address: string;
     phone: string;
     slug?: string;
-    menus?: Menu[]
+    menus?: Menu[];
+    user?: User
 }
 
 export type Customer = {
@@ -34,6 +38,7 @@ export type Customer = {
     description: string;
     address: string;
     phone: string;
+    user?: User
 }
 
 export type OrderItem = {
@@ -53,14 +58,6 @@ export type Order = {
     code: string;
     created_at: string;
     order_items?: OrderItem[]
-    merchant?: Merchant
-    customer?: Customer
-}
-
-export type UserType = {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string;
-    roles?: string[]
+    merchant?: User
+    customer?: User
 }

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import Badge from './ui/badge/Badge.vue';
-import { UserType } from '@/types';
-import { usePage } from '@inertiajs/vue3';
 
 defineProps<{
     canLogin?: boolean;

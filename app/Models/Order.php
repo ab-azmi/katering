@@ -22,12 +22,12 @@ class Order extends Model
     //relation to merchant
     public function merchant(): BelongsTo
     {
-        return $this->belongsTo(Merchant::class);
+        return $this->belongsTo(User::class, 'merchant_id', 'id');
     }
 
     //relation to customer
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'customer_id', 'id');
     }
 }

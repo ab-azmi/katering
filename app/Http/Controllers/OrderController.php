@@ -14,16 +14,11 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        if (auth()->user()->hasRole('customer')) {
-            $id = auth()->user()->customer->id ?? null;
+        if (auth()->user()) {
+            $id = auth()->id();
             $this->orders = Order::with('orderItems.menu', 'merchant', 'customer')
                 ->where('customer_id', $id)
-                ->latest()
-                ->get();
-        } else {
-            $id = auth()->user()->merchant->id ?? null;
-            $this->orders = Order::with('orderItems.menu', 'merchant', 'customer')
-                ->where('merchant_id', $id)
+                ->orWhere('merchant_id', $id)
                 ->latest()
                 ->get();
         }
@@ -48,7 +43,8 @@ class OrderController extends Controller
 
     public function print(Order $order)
     {
-        $order->load('orderItems.menu', 'merchant', 'customer');
+        $order->load('orderItems.menu', 'merchant.merchant', 'customer.customer');
+        // dd($order->toArray());
         $pdf = Pdf::loadView('pdf.invoice', $order->toArray());
         return $pdf->download($order->code . '.pdf');
     }
