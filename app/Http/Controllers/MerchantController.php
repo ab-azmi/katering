@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Merchant;
-use App\Models\Order;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class MerchantController extends Controller
 {
-    public function getMerchant(Merchant $merchant){
-        
+    public function getMerchant(Merchant $merchant)
+    {
         $merchant->load('menus');
 
         return Inertia::render('Merchant/DetailMerchant', [
@@ -19,7 +20,8 @@ class MerchantController extends Controller
         ]);
     }
 
-    public function Checkout(Request $request){
+    public function Checkout(Request $request)
+    {
         try {
             $request->validate([
                 'merchant_id' => 'required|exists:merchants,id',
@@ -31,25 +33,24 @@ class MerchantController extends Controller
 
             //get customer id
             $customer_id = Customer::where('user_id', auth()->id())->first()->id;
-    
+
             //create order
             $order = Order::create([
                 'merchant_id' => $request->merchant_id,
                 'customer_id' => $customer_id,
-                'code' => 'ORD-'.time(),
+                'code' => 'ORD-' . time(),
                 'total' => $request->total,
                 'send_at' => now()
             ]);
             //create order items
-            foreach($request->items as $item){
+            foreach ($request->items as $item) {
                 $order->orderItems()->create([
                     'menu_id' => $item['menu']['id'],
                     'quantity' => $item['quantity'],
                 ]);
             }
-            
-            return;
 
+            return;
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -57,7 +58,8 @@ class MerchantController extends Controller
         }
     }
 
-    public function update(Merchant $merchant, Request $request){
+    public function update(Merchant $merchant, Request $request)
+    {
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',

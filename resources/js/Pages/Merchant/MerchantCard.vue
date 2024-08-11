@@ -27,9 +27,8 @@ const props = defineProps<{
       </CardDescription>
     </CardHeader>
     <CardContent>
-        <Link :href="route('merchant.detail', merchant.id)" as="button">
+        <Link :href="route('merchant.detail', merchant)" as="button">
             <Button>
-                
                 Visit Merchant
             </Button>
         </Link>

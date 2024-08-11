@@ -45,6 +45,10 @@ class DatabaseSeeder extends Seeder
             'user_id' => $merchant->id
         ]);
 
+        Merchant::factory(10)->create([
+            'user_id' => User::factory()->create()->id
+        ]);
+
         //user customer
         $customer = User::factory()->create([
             'name' => 'customer',
@@ -56,7 +60,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //make menus
-        $menus = Menu::factory(12)->create();
+        $menus = Menu::factory(50)->create();
 
         //make fotos
         foreach ($menus as $menu) {

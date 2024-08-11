@@ -24,6 +24,7 @@ export type Merchant = {
     description: string;
     address: string;
     phone: string;
+    slug?: string;
     menus?: Menu[]
 }
 

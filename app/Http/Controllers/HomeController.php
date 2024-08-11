@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class HomeController extends Controller
 {
     public function index(){
-        $merchant = Merchant::with('menus')->get(['id', 'name', 'address', 'phone', 'description']);
+        $merchant = Merchant::with('menus')->get(['id', 'name', 'address', 'phone', 'description', 'slug']);
 
         return Inertia::render('Welcome', [
             'merchants' => $merchant,
