@@ -20,17 +20,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::controller(MerchantController::class)->group(function (){
-   Route::get('/merchant/{merchant:slug}', 'getMerchant')->name('merchant.detail');
-   Route::post('/checkout', 'checkout')->name('checkout')->middleware(['auth']);
-   Route::patch('/merchant/{merchant}', 'update')->name('merchant.update');
-});
-
-Route::controller(OrderController::class)->group(function(){
-    Route::get('/order', 'index')->name('order.index');
-    Route::get('/order/dashboard', 'dashboard')->name('dashboard.order')->middleware('role:merchant');
-    Route::get('/order/print/{order}', 'print')->name('order.print');
-    Route::put('/order/{order}', 'update')->name('order.update');
-});
 
 require __DIR__.'/auth.php';

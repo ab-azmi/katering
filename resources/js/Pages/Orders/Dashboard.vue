@@ -79,18 +79,26 @@ const updateStatus = (order: Order, status: string) => {
                                     {{ order.code }}
                                 </TableCell>
                                 <TableCell>
-                                    <DropdownMenu>
+                                    <DropdownMenu v-if="order.merchant_id == $page.props.auth.user.id">
                                         <DropdownMenuTrigger>
-                                            <Badge :variant="order.status === 'success' ? 'default' : order.status === 'pending' ? 'outline' : 'destructive'">
+                                            <Badge
+                                                :variant="order.status === 'success' ? 'default' : order.status === 'pending' ? 'outline' : 'destructive'">
                                                 {{ order.status }}
                                             </Badge>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
-                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'pending')">Pending</DropdownMenuItem>
-                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'success')">Success</DropdownMenuItem>
-                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'cancel')">Cancel</DropdownMenuItem>
+                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'pending')">Pending
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'success')">Success
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem @click.prevent="updateStatus(order, 'cancel')">Cancel
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
+                                    <Badge v-else
+                                        :variant="order.status === 'success' ? 'default' : order.status === 'pending' ? 'outline' : 'destructive'">
+                                        {{ order.status }}
+                                    </Badge>
                                 </TableCell>
                                 <TableCell>{{ order.merchant?.name }}</TableCell>
                                 <TableCell>

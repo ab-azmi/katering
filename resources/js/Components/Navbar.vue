@@ -22,10 +22,10 @@ defineProps<{
             <div class="flex gap-6 items-center">
                 <Link :href="route('home')" class="font-bold">Merchant</Link>
                 <Link  :href="route('order.index')" class="font-bold">My Order</Link>
-                <Link v-if="$page.props.auth.user && !$page.props.auth.isCustomer" :href="route('dashboard')" class="font-bold">Dashboard</Link>
+                <Link v-if="$page.props.auth?.user && !$page.props.auth?.isCustomer" :href="route('dashboard')" class="font-bold">Dashboard</Link>
             </div>       
     
-            <template v-if="!$page.props.auth.user">
+            <template v-if="!$page.props.auth?.user">
                 <Link :href="route('login')"
                     >
                 Log in
@@ -33,7 +33,7 @@ defineProps<{
             </template>
             <template v-else>
                 <Badge>
-                    {{ $page.props.auth.user.name }}
+                    {{ $page.props.auth?.user.name }}
                 </Badge>
                 <Link :href="route('logout')" method="post" as="button">Logout</Link>
             </template>

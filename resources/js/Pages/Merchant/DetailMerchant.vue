@@ -52,7 +52,7 @@ function handleCheckout() {
         return
     }
 
-    form.post(route('checkout'), {
+    form.post(route('merchant.checkout'), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset()

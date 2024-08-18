@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'isCustomer' => $request->user()?->hasRole('customer'),
                 'isAdmin' => $request->user()?->hasRole('admin'),
+                'isMerchant' => $request->user()?->hasRole('merchant'),
                 'merchant' => $request->user()?->merchant,
             ],
         ];
