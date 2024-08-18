@@ -14,6 +14,28 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     };
 };
 
+export type Paginated<T = {}> = {
+    data?: T;
+    per_page: number;
+    first_page_url: string;
+    last_page_url: string;
+    from: number;
+    links: {
+        url: string | null;
+        label: string;
+        active: boolean;
+    }[];
+    current_page: number;
+    last_page: number;
+    query?: string;
+    page_name?: string;
+    on_each_side?: number;
+    next_page_url: string | null;
+    prev_page_url: string | null;
+    path: string;
+    total: number;
+}
+
 export type Menu = {
     id: number;
     name: string;

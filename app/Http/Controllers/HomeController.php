@@ -10,11 +10,21 @@ use Inertia\Inertia;
 
 class HomeController extends Controller
 {
-    public function index(){
-        $merchant = Merchant::with('menus')->paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
+    public function index(Request $request){
+        
+        if($request->has('search')){
+            $merchant = Merchant::with('menus')
+                ->where('name', 'like', '%'.$request->search.'%')
+                ->paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
+        }else{
 
+        $merchant = Merchant::with('menus')
+            ->paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
+
+        }
+        
         return Inertia::render('Welcome', [
-            'merchants' => $merchant,
+            'merchants' => $merchant ?? [],
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
         ]);

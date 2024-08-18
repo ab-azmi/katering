@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => $merchant->id
         ]);
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 100) as $index) {
             $temp = User::factory()->create()->assignRole('merchant');
             Merchant::factory()->create([
                 'user_id' => $temp->id
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //make menus
-        $menus = Menu::factory(50)->create();
+        $menus = Menu::factory(150)->create();
 
         //make fotos
         foreach ($menus as $menu) {
