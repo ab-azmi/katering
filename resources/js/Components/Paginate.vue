@@ -28,21 +28,22 @@ const totalItem = ref(props.data.total -1)
 const handlePageChange = (page: number) => {
     if(page < 1 || page > props.data.last_page) return
 
-    router.visit(props.data.path + '?page=' + page)
+    router.visit(props.data.path + '?page=' + page, {
+        preserveState: true,
+    })
 }
-
+console.log(props.data)
 </script>
 
 <template>
-    <Pagination v-slot="{ page }" :total="totalItem" :sibling-count="1" show-edges :default-page="1">
+    <Pagination v-model:page="currPage" :itemsPerPage="data.per_page" :total="totalItem" :sibling-count="1" show-edges :default-page="1" @update:page="handlePageChange">
         <PaginationList v-slot="{ items }" class="flex items-center gap-1">
             <PaginationFirst @click.prevent="handlePageChange(1)"/>
             <PaginationPrev @click.prevent="handlePageChange(currPage - 1)"/>
 
             <template v-for="(item, index) in items">
                 <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
-                    <Button class="w-10 h-10 p-0" :variant="item.value === currPage ? 'default' : 'outline'"
-                        @click.prevent="handlePageChange(item.value)">
+                    <Button class="w-10 h-10 p-0" :variant="item.value === currPage ? 'default' : 'outline'">
                         {{ item.value }}
                     </Button>
                 </PaginationListItem>

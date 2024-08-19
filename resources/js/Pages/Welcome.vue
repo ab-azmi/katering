@@ -14,18 +14,23 @@ const props = defineProps<{
     merchants: Paginated<Merchant[]>;
     canLogin?: boolean;
     canRegister?: boolean;
+    search?: string;
 }>();
 
-const search = ref<string>('');
+const searchInput = ref<string>(props.search ?? '');
 
 const querySearch = () => {
-    router.visit(route('home', { search: search.value }), {
-        preserveState: true,
+    router.visit(route('home', { search: searchInput.value }), {
+        only: ['merchants', 'search'],
     });
 }
 
-watch(search, () => {
-    useDebounceFn(querySearch, 500)();
+watch(searchInput, () => {
+    if(searchInput.value === '') {
+        router.visit(route('home'), {
+            only: ['merchants', 'search'],
+        });
+    }
 });
 
 </script>
@@ -43,7 +48,7 @@ watch(search, () => {
             <h1 class="text-3xl font-bold my-7">
                 Merchants
             </h1>
-            <MerchantFilter v-model="search" />
+            <MerchantFilter v-model="searchInput" @keyup.enter="querySearch"/>
             <div class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 <template v-for="merchant in merchants.data" :key="merchant.id">
                     <MerchantCard :merchant="merchant"/>

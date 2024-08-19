@@ -12,14 +12,12 @@ class HomeController extends Controller
 {
     public function index(Request $request){
         
-        if($request->has('search')){
-            $merchant = Merchant::with('menus')
-                ->where('name', 'like', '%'.$request->search.'%')
+        if($request->has('search') && $request->search != null){
+            $merchant = Merchant::search($request->search)
                 ->paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
         }else{
 
-        $merchant = Merchant::with('menus')
-            ->paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
+        $merchant = Merchant::paginate(15, ['id', 'name', 'address', 'phone', 'description', 'slug']);
 
         }
         
@@ -27,6 +25,7 @@ class HomeController extends Controller
             'merchants' => $merchant ?? [],
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'search' => $request->search
         ]);
     }
 }

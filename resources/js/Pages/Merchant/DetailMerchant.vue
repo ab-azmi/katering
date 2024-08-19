@@ -22,7 +22,7 @@ const form = useForm<{
 }>({
     total: 0,
     items: [],
-    merchant_id: props.merchant.user.id
+    merchant_id: props.merchant?.user?.id ?? 0
 })
 
 const page = usePage();
@@ -71,14 +71,16 @@ function handleCheckout() {
 
 }
 
+function handleBack() {
+    window.history.back()
+}
+
 </script>
 <template>
     <GuestLayout>
-        <Link :href="route('home')" as="button">
-        <Button class="text-sm mt-3">
-            <ArrowLeft class="h-6" />
-        </Button>
-        </Link>
+            <Button class="text-sm mt-3" @click="handleBack">
+                <ArrowLeft class="h-6" />
+            </Button>
         <div class="my-5">
             <h1 class="text-4xl font-semibold">{{ merchant.name }}</h1>
             <p class="italic text-slate-500">{{ merchant.address }}</p>

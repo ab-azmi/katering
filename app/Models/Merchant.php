@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,15 @@ class Merchant extends Model
             if ($merchant->isDirty('name')) {
                 $merchant->slug = Str::slug($merchant->name);
             }
+        });
+    }
+
+    public function scopeSearch(Builder $query, ?string $search = null): void
+    {
+        $query->when($search, function (Builder $query, string $search) {
+            $query->where('name', 'like', '%'.$search.'%')
+                ->orWhere('address', 'like', '%'.$search.'%')
+                ->orWhere('description', 'like', '%'.$search.'%');
         });
     }
 
